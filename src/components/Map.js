@@ -9,7 +9,6 @@ import {
 import { useState } from "react/cjs/react.development";
 import { dataSharingPoint } from "./StateContext";
 import TooltipHover from "./TooltipHover";
-import Graph from "./Graph";
 
 import "./pop.css";
 
@@ -18,7 +17,6 @@ function Map({ data, userData }) {
   const { setUsersPerRegion } = useContext(dataSharingPoint);
   const [lat, setLat] = useState();
   const [long, setLong] = useState();
-  const [layerr, setLayer] = useState();
 
   function totalUsersPerArea(region, layer) {
     const filteredUsersPerRegion = userData?.users?.filter(
@@ -35,45 +33,36 @@ function Map({ data, userData }) {
   function hoverPopups(layer, event) {
     setLat(event.latlng.lat);
     setLong(event.latlng.lng);
-
-    // if (
-    //   event.target.feature.properties.name === layer.feature.properties.name
-    // ) {
-    //   layer.options.fillColor = "black";
-    // } else {
-    //   console.log("notiingn");
-    // }
-    // event.target.setStyle({ fillColor: "red" });
   }
 
   const eachRegion = (region, layer) => {
-    // console.log(layer.options);
-    //     click: (event)=>
-    //         {
-    //       if (counter > 0)
-    //       { layerBe.setStyle({ fillOpacity: 0.5 }) }
-    // event.target.setStyle({fillOpacity:0.8});              ////// see this code tommroow
-    //  layerBe=event.target;
-    //  counter=1;
-    //         }
-    //         });
     if (
       userData?.users?.filter(
         (user) => user.area_id === region.properties.area_id
-      ).length > 200
+      ).length >
+      userData?.users?.filter(
+        (user) => user.area_id === region.properties.area_id
+      ).length /
+        2
     ) {
       layer.options.fillColor = "green";
     } else {
       layer.options.fillColor = "red";
     }
     layer.on({
-      click: (event) => {
-        totalUsersPerArea(region, layer);
-      },
       mouseover: (event) => {
         hoverPopups(layer, event);
         totalUsersPerArea(region, layer);
         setRegion(region);
+        let counter = 0;
+        // when hovered on a region only that region changes opacity
+        if (counter > 0) {
+          layer.setStyle({ fillColor: "" });
+        } else {
+          layer.setStyle({ fillOpacity: "1" });
+          layer = event.target;
+          counter = 1;
+        }
       },
     });
   };
@@ -97,12 +86,7 @@ function Map({ data, userData }) {
         />
         {lat && long ? (
           <Marker riseOnHover={true} className="marker" position={[lat, long]}>
-            <Tooltip
-              sticky
-              direction="top"
-              position={[lat, long]}
-              className="tooltip"
-            >
+            <Tooltip sticky direction="top" className="tooltip">
               <TooltipHover />
             </Tooltip>
           </Marker>

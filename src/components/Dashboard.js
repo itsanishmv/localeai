@@ -1,17 +1,18 @@
 import React from "react";
-import { useContext, useEffect,useState } from "react/cjs/react.development";
+import { useContext } from "react/cjs/react.development";
 import styled from "styled-components";
 import { dataSharingPoint } from "./StateContext";
 import Graph from "./Graph";
+
 function Dashboard() {
   const { userData, usersPerRegion, region } = useContext(dataSharingPoint)
 
-const totalMatchPerUser = usersPerRegion.filter((user) => user.total_matches !==0)
+  const totalMatchPerUser = usersPerRegion.filter((user) => user.total_matches !==0)
   const matchNumbers =totalMatchPerUser.map(item => item.total_matches)
   const sumOfMatchesPerRegion=matchNumbers.reduce((acc, curr) => {
-    return acc + curr
-  }, 0)
-  
+      return acc + curr
+    }, 0)
+    
   return (
     <DashboardContainer>
       <Header><span>Dashboard</span></Header>
@@ -64,13 +65,7 @@ const Body = styled.div`
   margin-left:-8px;
   color: white;
 `;
-const Stats = styled.div`
-  margin-top:-100px;
-  background-color:#2b2727;
-  transform:translate(50px,-10px);
-  z-index:20;
-  
-`
+
 const Pro = styled.div`
   display:flex;
   align-items:center;
@@ -114,7 +109,6 @@ const Male = styled(Pro)`
 const Users = styled(Pro)`
 span{
     color:#0BA273;
-   
   }
   
 `
