@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -6,10 +6,9 @@ import {
   GeoJSON,
   Tooltip,
 } from "react-leaflet";
-import { useState } from "react/cjs/react.development";
+
 import { dataSharingPoint } from "./StateContext";
 import TooltipHover from "./TooltipHover";
-
 import "./pop.css";
 
 function Map({ data, userData }) {
@@ -18,7 +17,7 @@ function Map({ data, userData }) {
   const [lat, setLat] = useState();
   const [long, setLong] = useState();
 
-  function totalUsersPerArea(region, layer) {
+  function totalUsersPerArea(region) {
     const filteredUsersPerRegion = userData?.users?.filter(
       (user) => user.area_id === region.properties.area_id
     );
@@ -30,7 +29,7 @@ function Map({ data, userData }) {
     weight: 0.5,
     fillOpacity: 0.4,
   };
-  function hoverPopups(layer, event) {
+  function hoverPopups(event) {
     setLat(event.latlng.lat);
     setLong(event.latlng.lng);
   }
@@ -51,8 +50,8 @@ function Map({ data, userData }) {
     }
     layer.on({
       mouseover: (event) => {
-        hoverPopups(layer, event);
-        totalUsersPerArea(region, layer);
+        hoverPopups(event);
+        totalUsersPerArea(region);
         setRegion(region);
         let counter = 0;
         // when hovered on a region only that region changes opacity

@@ -6,7 +6,7 @@ import { dataSharingPoint } from "./components/StateContext";
 
 function App() {
   const [loading, setLoading] = useState(false);
-  const { usersPerRegion, Geodata, setGeoData, userData, setUserData } =
+  const { Geodata, setGeoData, userData, setUserData } =
     useContext(dataSharingPoint);
 
   useEffect(() => {

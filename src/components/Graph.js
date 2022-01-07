@@ -1,12 +1,13 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import 'chart.js/auto'
 import { Doughnut } from 'react-chartjs-2'
-import { useContext } from 'react/cjs/react.development'
+
 import { dataSharingPoint } from './StateContext'
 
 function Graph() {
     const { usersPerRegion } = useContext(dataSharingPoint)
-   const males= usersPerRegion.filter((user) => user.gender === "M").length 
+
+    const males= usersPerRegion.filter((user) => user.gender === "M").length 
     const females = usersPerRegion.filter((user) => user.gender === "F").length 
     const data = {
         lables: ['females','males'],
